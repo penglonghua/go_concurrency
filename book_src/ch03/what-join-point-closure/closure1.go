@@ -19,7 +19,7 @@ func main() {
 
 	go func() {
 		defer wg.Done()
-		salutation = "welcome"
+		salutation = "welcome" // 这个地方只有一个值，这是肯定的.
 
 	}()
 

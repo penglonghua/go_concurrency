@@ -8,6 +8,8 @@ import (
 // 什么叫锁
 // 临界区的概念, 就是程序中需要独占共享资源的区域
 
+// 这个例子 非常好，值得推荐
+// 这个例子 非常好，值得推荐
 func main() {
 
 	var count int       // 共享变量
@@ -28,7 +30,6 @@ func main() {
 	}
 
 	//	开始并发了
-
 	var wg sync.WaitGroup
 
 	// 增加
@@ -52,5 +53,7 @@ func main() {
 
 	wg.Wait()
 	fmt.Println("Arithmetic complete")
+
+	fmt.Printf("final :%d\n", count)
 
 }
