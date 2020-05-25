@@ -57,5 +57,67 @@ Mutex
 ## cond
 这个地方是一个什么东西?
 
+**带条件的锁**
+
+这个地方 跟条件有关系.
+
+引出
+```text
+
+如果有一种方法可以让 goroutine 有效地等待，直到它发出信号并检查它的状态，那就更好了.
+
+这正是 Cond类型为我们所做的.
+
+
+```
+
+代码模板
+```text
+
+c := sync.NewCond(&sync.Mutex{})
+c.L.Lock()
+
+
+// 当某个条件成立的时候,执行 等待
+for conditionTrue == false {
+    c.Wait() // 等待通知，这是一个阻塞通信， goroutine 将被暂停.
+}
+
+c.L.Unlock()
+
+
+```
+
+调用 c.Wait() ， 不只是阻塞，它挂起来了当前的 goroutine, 但是运行其他的 goroutine 在 OS线程上运行.
+
+**带条件的锁**
+当然也有锁的 "临界区."
+
+
+1. 是基本使用.
+2. Signal() 和 Broadcast() 特别是 Broadcast 的使用，(因为有时候 它的使用场景是比 channel还要好的.)
+
+
+## once 
+
+看看标准库中 有多少使用这个关键字的.
+
+```shell
+penglonghua@plh:~/temp$ grep -ir sync.Once $(go env GOROOT)/src | wc -l
+112
+```
+
+注意使用.
+
+## 池 (pool)
+
+
+这个地方可以先想想一下:
+
+Pool的主接口是它的 Get方法.
+当调用时，Get方法首先检查池中是否有可用的实例, 如果没有，调用它的 new方法来创建一个新实例。
+当完成时，调用者调用 Put方法把工作的实例归还到池中,以供其他进程使用. (如果不调用 Put就不会放入!!!)
+
+
 
 

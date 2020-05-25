@@ -6,6 +6,8 @@ import (
 
 // all goroutines are asleep - deadlock!
 
+// 循环引用
+
 func main() {
 	var onceA, onceB sync.Once
 	var initB func() // 这是一个函数类型
