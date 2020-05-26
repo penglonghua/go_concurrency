@@ -156,4 +156,57 @@ saluation,ok := <-stringStream
 
 
 
-## 
+##  close 关闭 
+
+## 带缓冲的  channel
+
+不带缓冲的
+```text
+
+a := make(chan int) // 默认为0
+b := make(chan int, 0) 
+
+
+
+```
+
+带缓冲的
+```text
+c := make(chan int, 4) //
+```
+带缓冲的 channel 是一个 FIFO的类型.
+
+## channel 的默认值 nil
+程序如何与 值为 nil的 channel交互?
+
+1. 从 nil channel 读取数据将阻塞程序, 会报告错误.
+2. 从 nil channel 写入数据也会阻塞程序，会报告错误.
+3. 那么只剩下一个操作， close,看看这个会发生什么?
+   panic: close of nil channel . 
+   
+ 
+## channel 的拥有者 (生产者)(所有者) 和使用者 (消费者) (非所有者)
+这个地方其实是 小记，对前面的进行部分总结:
+
+谁拥有 channel 的所有权,即哪个 go 拥有 channel.
+
+
+* 拥有者的go 应该具备:
+1. 实例化 channel
+2. 执行写操作，或者将所有权传递给另一个go.
+3. 关闭 channel.
+4. 执行在此列表中的前三件事，并通过一个只读 channel 将它们暴露出来.
+
+通过将这些责任分别给了 channel 所有者，一些事情发生了.
+1. 因为我们初始化了 channel ，所有我们将死锁的风险转移到了 nil channel上了.
+2. 因为我们初始化了 channel ,所有我们通过关闭一个 nil channel 来消除 panic的风险.
+3. 因为我们决定了 channel 何时关闭，所以我们通过写入一个关闭的 channel 来消除
+panic.
+4. 因为我们决定了 channel 何时关闭，所以我们不止一次关闭的 channel 来消除
+   ,从而消除了 panic的风险.
+5. 我们在编译时使用类型检查器，以防止写入 channel异常.
+
+
+
+
+ 
