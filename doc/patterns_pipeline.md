@@ -9,3 +9,8 @@ stage (舞台)
 
 
 ## 构建 pipeline 的最佳实践
+
+## fan-in, fan-out 扇入，扇出
+这个地方是专门术语.
+
+ 这个地方 就是 多路复用 channel
